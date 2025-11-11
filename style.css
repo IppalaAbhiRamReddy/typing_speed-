@@ -144,8 +144,10 @@ body{
   color:var(--text);
   box-shadow: 0 6px 18px rgba(0,0,0,0.6);
 }
-.btn-primary{ background: linear-gradient(90deg,#232326,#2f3134); }
-.btn-primary:hover{ box-shadow: var(--btn-hover-shadow); transform:translateY(-3px); }
+.btn-primary {
+  display: none !important;
+  visibility: hidden !important;
+}
 .btn-secondary{
   background:transparent;
   border:1px solid rgba(255,255,255,0.04);
