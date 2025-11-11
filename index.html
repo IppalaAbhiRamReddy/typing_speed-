@@ -1,83 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="A modern typing speed test app with real-time feedback and beautiful design">
-    <title>Typing Speed Test</title>
-    <!-- Google Fonts - Poppins -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- CSS -->
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="A modern typing speed test app with real-time feedback and beautiful dark design"/>
+  <title>Typing Speed Test</title>
+  <!-- Google Fonts - Poppins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <header class="header">
-            <h1 class="title">Typing Speed Test</h1>
-            <p class="subtitle">Test your typing speed and accuracy</p>
-        </header>
-        <main class="main-content">
-            <div class="typing-card">
-                <!-- Timer and Stats Display -->
-                <div class="stats-container">
-                    <div class="stat-item">
-                        <span class="stat-label">Time</span>
-                        <span class="stat-value" id="timer">0:00</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">WPM</span>
-                        <span class="stat-value" id="wpm">0</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Accuracy</span>
-                        <span class="stat-value" id="accuracy">100%</span>
-                    </div>
-                </div>
-                <!-- Typing Area -->
-                <div class="typing-area" id="typingArea">
-                    <div class="paragraph-display" id="paragraphDisplay">
-                        <!-- Paragraph will be displayed here -->
-                    </div>
-                    <textarea class="typing-input" id="typingInput" placeholder="Click 'Start Test' to begin..." disabled></textarea>
-                </div>
-                <!-- Controls -->
-                <div class="controls">
-                    <button class="btn btn-primary" id="startBtn">Start Test</button>
-                    <button class="btn btn-secondary" id="resetBtn">Reset Test</button>
-                </div>
-                <!-- Results Display (Hidden Initially) -->
-                <div class="results-container" id="resultsContainer">
-                    <div class="results-content">
-                        <h3 class="results-title">Test Complete!</h3>
-                        <div class="final-stats">
-                            <div class="final-stat">
-                                <span class="final-stat-label">Final WPM</span>
-                                <span class="final-stat-value" id="finalWpm">0</span>
-                            </div>
-                            <div class="final-stat">
-                                <span class="final-stat-label">Final Accuracy</span>
-                                <span class="final-stat-value" id="finalAccuracy">0%</span>
-                            </div>
-                            <div class="final-stat">
-                                <span class="final-stat-label">Time Taken</span>
-                                <span class="final-stat-value" id="finalTime">0:00</span>
-                            </div>
-                        </div>
-                        <p class="motivational-message" id="motivationalMessage">
-                            Great job! Keep practicing!
-                        </p>
-                        <button class="btn btn-primary" id="newTestBtn">Start New Test</button>
-                    </div>
-                </div>
+  <div class="container">
+    <header class="header">
+      <h1 class="title">Typing Speed Test</h1>
+      <p class="subtitle">Type directly on the paragraph — timer auto-starts when you begin</p>
+    </header>
+
+    <main class="main-content">
+      <div class="typing-card">
+        <!-- Timer options -->
+        <div class="timer-options" role="tablist" aria-label="Timer options">
+          <button class="timer-btn" data-seconds="15" id="timer15">15s</button>
+          <button class="timer-btn selected" data-seconds="30" id="timer30">30s</button>
+          <button class="timer-btn" data-seconds="60" id="timer60">60s</button>
+        </div>
+
+        <!-- Top Stats Row (Time only visible during test) -->
+        <div class="stats-container" id="topStats">
+          <div class="stat-item">
+            <span class="stat-label">Time</span>
+            <span class="stat-value timer" id="timer">0:30</span>
+          </div>
+          <div class="stat-item hide-during-test" id="wpmWrap">
+            <span class="stat-label">WPM</span>
+            <span class="stat-value" id="wpm">0</span>
+          </div>
+          <div class="stat-item hide-during-test" id="accuracyWrap">
+            <span class="stat-label">Accuracy</span>
+            <span class="stat-value" id="accuracy">100%</span>
+          </div>
+        </div>
+
+        <!-- Typing Area (paragraph is focusable and captures typing) -->
+        <div class="typing-area">
+          <div class="paragraph-display" id="paragraphDisplay" tabindex="0" aria-label="Typing paragraph" role="textbox" aria-multiline="true">
+            <!-- JS will fill spans here -->
+          </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+          <!-- Start button remains for manual reload/new paragraph; timer starts automatically on typing -->
+          <button class="btn btn-primary" id="startBtn" title="Load new paragraph">New Paragraph</button>
+          <!-- Reset symbol button -->
+          <button class="btn btn-secondary" id="resetBtn" title="Reset test">↻</button>
+        </div>
+
+        <!-- Results Display (shown after test end) -->
+        <div class="results-container" id="resultsContainer" aria-live="polite">
+          <div class="results-content">
+            <h3 class="results-title">Test Complete!</h3>
+            <div class="final-stats">
+              <div class="final-stat">
+                <span class="final-stat-label">Final WPM</span>
+                <span class="final-stat-value" id="finalWpm">0</span>
+              </div>
+              <div class="final-stat">
+                <span class="final-stat-label">Final Accuracy</span>
+                <span class="final-stat-value" id="finalAccuracy">0%</span>
+              </div>
+              <div class="final-stat">
+                <span class="final-stat-label">Time Taken</span>
+                <span class="final-stat-value" id="finalTime">0:30</span>
+              </div>
             </div>
-        </main>
-        <footer class="footer">
-            <p>&copy; 2024 Typing Speed Test. Improve your typing skills with practice.</p>
-        </footer>
-    </div>
-    <!-- JavaScript -->
-    <script src="script.js"></script>
+            <p class="motivational-message" id="motivationalMessage">
+              Great job! Keep practicing!
+            </p>
+            <button class="btn btn-primary" id="newTestBtn">Start New Test</button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <p>&copy; 22BQ1A4261, Improve your typing skills with practice.</p>
+    </footer>
+  </div>
+
+  <!-- JS -->
+  <script src="script.js"></script>
 </body>
 </html>
